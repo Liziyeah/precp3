@@ -2,8 +2,11 @@ import ChosenCard from "../../components/ChosedCard/ChosedCard";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setEditingCharacter } from "../../store/slices/counter/characterSlice";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { updateCharacter } from "../../store/slices/counter/characterSlice";
 export const Edit = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const [character, setCharacter] = useState({
@@ -11,21 +14,16 @@ export const Edit = () => {
     status: "",
     species: "",
   });
-  useEffect(() => {
-    fetchCharacter();
-  }, [id]);
+  const customCharacters = useSelector(
+    (state) => state.characters.customCharacters
+  );
+  const characterToEdit = customCharacters.find((char) => char.id === id);
 
-  const fetchCharacter = async () => {
-    const response = await fetch(
-      `https://rickandmortyapi.com/api/character/${id}`
-    );
-    const data = await response.json();
-    setCharacter({
-      name: data.name,
-      status: data.status,
-      species: data.species,
-    });
-  };
+  useEffect(() => {
+    if (characterToEdit) {
+      setCharacter(characterToEdit);
+    }
+  }, [characterToEdit]);
 
   const handleChange = (e) => {
     //el valor que esta en el target.name, q seria el de la api, lo cambio por el valor que yo escriba en el input :D
@@ -39,7 +37,13 @@ export const Edit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(setEditingCharacter(character));
+    dispatch(
+      updateCharacter({
+        ...character,
+        id: id,
+      })
+    );
+    navigate("/");
   };
   return (
     <>

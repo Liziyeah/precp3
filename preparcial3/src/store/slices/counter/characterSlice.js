@@ -23,12 +23,15 @@ export const characterSlice = createSlice({
         (character) => character.id !== action.payload
       );
     },
-    updateCustomCharacter: (state, action) => {
-      const index = state.customCharacters.findIndex(
+    updateCharacter: (state, action) => {
+      const { name, status, species } = action.payload;
+      const characterFound = state.customCharacters.find(
         (character) => character.id === action.payload.id
       );
-      if (index !== -1) {
-        state.customCharacters[index] = action.payload;
+      if (characterFound) {
+        characterFound.name = name;
+        characterFound.status = status;
+        characterFound.species = species;
       }
     },
     setEditingCharacter: (state, action) => {
@@ -48,7 +51,7 @@ export const {
   setApiCharacters,
   addCustomCharacter,
   deleteCustomCharacter,
-  updateCustomCharacter,
+  updateCharacter,
   setEditingCharacter,
   setSearchQuery,
   setUserType,
