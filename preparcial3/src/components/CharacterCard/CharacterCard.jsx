@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { deleteCustomCharacter } from "../../store/slices/counter/characterSlice";
 const CharacterCard = ({ id, name, status, species }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <>
       <div className="character-card">
@@ -11,6 +13,9 @@ const CharacterCard = ({ id, name, status, species }) => {
       </div>
       <div>
         <button onClick={() => navigate(`/edit/${id}`)}>Editar</button>
+        <button onClick={() => dispatch(deleteCustomCharacter(id))}>
+          Delete
+        </button>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 //dispatch es para hacer algo y useSelector es para obtener o seleccionar algo del store
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   setApiCharacters,
   setSearchQuery,
@@ -9,8 +9,8 @@ import {
 import CharacterCard from "../../components/CharacterCard/CharacterCard";
 
 export const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [valueInput, setValueInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -55,38 +55,38 @@ export const Home = () => {
   );
 
   return (
-    <div className="home">
-      <h1>Rick and Morty Characters</h1>
-      <input
-        type="text"
-        value={valueInput}
-        onChange={(e) => {
-          setValueInput(e.target.value);
-          dispatch(setSearchQuery(e.target.value));
-        }}
-        placeholder="Busca a un personaje por su nombre"
-      />
-      {userType === "admin" && (
-        <Link to="/create">
-          <button>Crear personaje</button>
-        </Link>
-      )}
-      <button onClick={fetchData}>Buscar Personaje</button>
+    <>
+      <div className="home">
+        <h1>Rick and Morty Characters</h1>
+        <input
+          type="text"
+          value={valueInput}
+          onChange={(e) => {
+            setValueInput(e.target.value);
+            dispatch(setSearchQuery(e.target.value));
+          }}
+          placeholder="Busca a un personaje por su nombre"
+        />
+        {userType === "admin" && (
+          <button onClick={() => navigate("/create")}>Crear personaje</button>
+        )}
+        <button onClick={fetchData}>Buscar Personaje</button>
 
-      {loading && <p>Cargando...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {loading && <p>Cargando...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div className="characters-container">
-        {filteredCharacters.map((character) => (
-          <CharacterCard
-            key={character.id}
-            name={character.name}
-            status={character.status}
-            species={character.species}
-            id={character.id}
-          />
-        ))}
+        <div className="characters-container">
+          {filteredCharacters.map((character) => (
+            <CharacterCard
+              key={character.id}
+              name={character.name}
+              status={character.status}
+              species={character.species}
+              id={character.id}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

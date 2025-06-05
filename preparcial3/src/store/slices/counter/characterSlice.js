@@ -15,7 +15,7 @@ export const characterSlice = createSlice({
     setApiCharacters: (state, action) => {
       state.apiCharacters = action.payload;
     },
-    addCustomCharacters: (state, action) => {
+    addCustomCharacter: (state, action) => {
       state.customCharacters.push(action.payload);
     },
     deleteCustomCharacter: (state, action) => {

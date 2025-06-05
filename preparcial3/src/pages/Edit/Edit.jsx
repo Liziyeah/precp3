@@ -55,8 +55,21 @@ export const Edit = () => {
           placeholder="Nombre del personaje"
           onChange={handleChange}
         />
-        <input type="text" placeholder="Estado" />
-        <input type="text" placeholder="Especie" />
+        <input
+          name="status"
+          type="text"
+          placeholder="Estado"
+          value={character.status}
+          onChange={handleChange}
+        />
+        <input
+          name="species"
+          type="text"
+          placeholder="Especie"
+          value={character.species}
+          onChange={handleChange}
+        />
+
         <button type="submit">Guardar Cambios</button>
       </form>
     </>
